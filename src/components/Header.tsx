@@ -1,7 +1,7 @@
 function Header() {
   return (
     <header>
-      <h1>Arthos Tracker</h1>
+      <h1>Artha Tracker</h1>
       <p>Your personal spending & subscription tracker</p>
     </header>
   );
