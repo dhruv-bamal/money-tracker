@@ -1,14 +1,15 @@
 import { useState } from "react";
-import type { Category } from "./types";
+import type { Transaction, Category } from "./types";
 import Header from "./components/Header";
 import ExpenseList from "./components/ExpenseList";
 import Summary from "./components/Summary";
-import transactions from "./lib/data";
+import initialData from "./lib/data";
 import { categorize } from "./lib/logic";
 
 type FilterCategory = Category | "All";
 
 function App() {
+  const [transactions, setTransactions] = useState<Transaction[]>(initialData);
   const [activeCategory, setActiveCategory] = useState<FilterCategory>("All");
 
   const filteredTransactions =
@@ -16,19 +17,18 @@ function App() {
       ? transactions
       : transactions.filter((tx) => categorize(tx) === activeCategory);
 
-  const buttons: FilterCategory[] = [
-    "All",
-    "Food",
-    "Transport",
-    "Subscriptions",
-  ];
+  function deleteExpense(id: number): void {
+    setTransactions(transactions.filter((t) => t.id !== id));
+  }
 
   return (
     <div>
       <Header />
       <Summary transactions={transactions} />
       <div>
-        {buttons.map((cat) => (
+        {(
+          ["All", "Food", "Transport", "Subscriptions"] as FilterCategory[]
+        ).map((cat) => (
           <button
             key={cat}
             onClick={() => setActiveCategory(cat)}
@@ -41,7 +41,10 @@ function App() {
           </button>
         ))}
       </div>
-      <ExpenseList transactions={filteredTransactions} />
+      <ExpenseList
+        transactions={filteredTransactions}
+        onDelete={deleteExpense}
+      />
     </div>
   );
 }

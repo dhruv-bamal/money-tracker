@@ -9,7 +9,7 @@ import type { Transaction } from "../types";
 //   date: when it happened (string, ISO format: YYYY-MM-DD)
 // }
 
-const transactions: Transaction[] = [
+const initialData: Transaction[] = [
   {
     id: 1,
     amount: 450,
@@ -72,4 +72,4 @@ const transactions: Transaction[] = [
   },
 ];
 
-export default transactions;
+export default initialData;
