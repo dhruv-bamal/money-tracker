@@ -10,7 +10,7 @@ export interface Transaction {
   id: string;
   amount: number;
   merchant: string;
-  date: string; // ISO format: YYYY-MM-DD
+  date: string;
 }
 
 export type CategoryTotals = {

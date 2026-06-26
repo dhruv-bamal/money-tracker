@@ -1,14 +1,5 @@
 import type { Transaction } from "../types";
 
-// A transaction represents one expense or income entry.
-// Shape:
-// {
-//   id: unique identifier (string or number)
-//   amount: money spent (number, in rupees)
-//   merchant: where it was spent (string)
-//   date: when it happened (string, ISO format: YYYY-MM-DD)
-// }
-
 const initialData: Transaction[] = [
   {
     id: "1",
