@@ -34,33 +34,36 @@ function BudgetBar({ transactions }: BudgetBarProps) {
 
   return (
     <div className={styles.card}>
-      <h2 className={styles.title}>Monthly Budget</h2>
-      <div className={styles.limitRow}>
-        <label htmlFor="budget-limit" className={styles.limitLabel}>
-          Set Limit (₹)
-        </label>
-        <input
-          id="budget-limit"
-          type="number"
-          value={limit}
-          min="0"
-          className={styles.limitInput}
-          onChange={(e) => {
-            const val = Number(e.target.value);
-            setLimit(val);
-          }}
-        />
-      </div>
+      <div className={styles.heroTop}>
+        <div className={styles.statsRow}>
+          <h2 className={styles.title}>Monthly Budget</h2>
+          <span className={styles.spent}>
+            <span className={styles.spentLabel}>Spent</span>₹
+            {spent.toLocaleString("en-IN")}
+          </span>
+          <span className={isOver ? styles.over : styles.remaining}>
+            {isOver
+              ? `Over by ₹${budget.overspendBy().toLocaleString("en-IN")}`
+              : `Remaining: ₹${remaining.toLocaleString("en-IN")}`}
+          </span>
+        </div>
 
-      <div className={styles.statsRow}>
-        <span className={styles.spent}>
-          Spent: ₹{spent.toLocaleString("en-IN")}
-        </span>
-        <span className={isOver ? styles.over : styles.remaining}>
-          {isOver
-            ? `Over by ₹${budget.overspendBy().toLocaleString("en-IN")}`
-            : `Remaining: ₹${remaining.toLocaleString("en-IN")}`}
-        </span>
+        <div className={styles.limitRow}>
+          <label htmlFor="budget-limit" className={styles.limitLabel}>
+            Set Limit (₹)
+          </label>
+          <input
+            id="budget-limit"
+            type="number"
+            value={limit}
+            min="0"
+            className={styles.limitInput}
+            onChange={(e) => {
+              const val = Number(e.target.value);
+              setLimit(val);
+            }}
+          />
+        </div>
       </div>
 
       <div className={styles.barTrack}>

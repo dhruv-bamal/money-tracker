@@ -2,18 +2,23 @@
 
 .card {
   background: var(--color-surface);
-  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--shadow-sm);
-  padding: var(--space-5);
+  padding: var(--space-5) var(--space-6);
 }
 
 .title {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  font-size: var(--text-lg);
-  line-height: var(--leading-lg);
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  line-height: var(--leading-base);
   font-weight: var(--font-semibold);
+  letter-spacing: -0.01em;
   color: var(--color-text-primary);
   margin-bottom: var(--space-3);
 }
@@ -27,7 +32,7 @@
 .row {
   display: flex;
   align-items: center;
-  padding: 10px 0;
+  padding: 11px 0;
   border-bottom: 1px solid var(--color-surface-2);
 }
 
@@ -46,16 +51,22 @@
 .count {
   font-size: var(--text-xs);
   line-height: var(--leading-xs);
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
   margin-left: var(--space-2);
   order: 2;
 }
 
+/* Subscription price in the warm gradient — the section's signature detail */
 .amount {
+  font-family: var(--font-display);
   font-size: var(--text-sm);
   line-height: var(--leading-sm);
-  font-weight: var(--font-semibold);
-  color: var(--color-text-primary);
+  font-weight: var(--font-bold);
+  font-variant-numeric: tabular-nums;
+  background: var(--gradient-warm);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   margin-left: auto;
   order: 3;
 }

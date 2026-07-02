@@ -1,32 +1,61 @@
 @import "../styles/global.css";
 
+/* Slim top bar: brand mark + title on the left, tagline on the right.
+   No card surface — just a hairline bottom border over the page canvas. */
 .header {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  background: var(--color-surface);
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  background: transparent;
   border-bottom: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  padding: var(--space-5) var(--space-8);
+  padding: var(--space-4) var(--space-1);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-md);
+  background: var(--gradient-warm);
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: var(--font-bold);
+  box-shadow: var(--glow-accent);
 }
 
 .title {
+  font-family: var(--font-display);
   font-size: var(--text-xl);
   line-height: var(--leading-xl);
-  font-weight: var(--font-bold);
+  font-weight: var(--font-semibold);
+  letter-spacing: -0.02em;
   color: var(--color-text-primary);
 }
 
 .tagline {
-  margin-top: var(--space-1);
-  font-size: var(--text-sm);
-  line-height: var(--leading-sm);
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
   color: var(--color-text-secondary);
+  text-align: right;
 }
 
 @media (max-width: 767px) {
   .header {
-    padding: var(--space-4) var(--space-5);
+    padding: var(--space-3) 0;
+  }
+
+  .tagline {
+    display: none;
   }
 }

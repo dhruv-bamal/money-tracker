@@ -13,14 +13,31 @@
   padding: 0;
 }
 
+/* Dark canvas with warm radial glows anchored to the top corners; the same
+   gradient stops work over the cream canvas in light mode (just fainter). */
 body {
-  background: var(--color-bg);
+  background:
+    radial-gradient(900px 480px at 12% -10%, rgba(255, 122, 47, 0.14), transparent 60%),
+    radial-gradient(760px 420px at 95% -5%, rgba(225, 77, 255, 0.1), transparent 60%),
+    var(--color-bg);
+  background-attachment: fixed;
   font-family: var(--font-sans);
   color: var(--color-text-primary);
   font-size: 16px;
   line-height: 1.5;
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-color-scheme: light) {
+  body {
+    background:
+      radial-gradient(900px 480px at 12% -10%, rgba(255, 122, 47, 0.1), transparent 60%),
+      radial-gradient(760px 420px at 95% -5%, rgba(225, 77, 255, 0.07), transparent 60%),
+      var(--color-bg);
+    background-attachment: fixed;
+  }
 }
 
 #root {

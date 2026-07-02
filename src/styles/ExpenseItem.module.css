@@ -1,15 +1,15 @@
 @import "../styles/global.css";
 
-/* Desktop (>=768px): single flex row. The 🔁 badge is a conditional sibling,
+/* Desktop (>=768px): single ledger row. The 🔁 badge is a conditional sibling,
    so flex + order keeps it hugging the merchant while the meta cluster is
    pushed right via margin-left:auto on the category badge. */
 .item {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  padding: 12px 16px;
+  padding: 13px 18px;
   border-bottom: 1px solid var(--color-surface-2);
-  transition: background 0.1s ease;
+  transition: background 0.15s ease;
 }
 
 .item:last-child {
@@ -34,6 +34,7 @@
   align-items: center;
   background: var(--color-subscriptions-bg);
   color: var(--color-subscriptions);
+  box-shadow: 0 0 12px var(--color-subscriptions-bg);
   padding: 2px 6px;
   border-radius: var(--radius-full);
   font-size: var(--text-xs);
@@ -47,26 +48,35 @@
   display: inline-flex;
   align-items: center;
   border-radius: var(--radius-full);
-  padding: 2px 8px;
+  padding: 3px 10px;
   font-size: var(--text-xs);
   line-height: var(--leading-xs);
   font-weight: var(--font-medium);
 }
 
+/* Ledger amount: display face, tabular figures, ₹ prefix drawn by CSS */
 .amount {
   order: 3;
+  font-family: var(--font-display);
   font-size: var(--text-sm);
   line-height: var(--leading-sm);
   font-weight: var(--font-semibold);
+  font-variant-numeric: tabular-nums;
   color: var(--color-text-primary);
   text-align: right;
+  min-width: 72px;
+}
+
+.amount::before {
+  content: "₹";
 }
 
 .date {
   order: 4;
   font-size: var(--text-xs);
   line-height: var(--leading-xs);
-  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
   text-align: right;
 }
 
@@ -78,7 +88,7 @@
   padding: 4px 8px;
   color: var(--color-text-muted);
   border-radius: var(--radius-sm);
-  font-size: var(--text-sm);
+  font-size: var(--text-xs);
   transition: color 0.15s ease, background 0.15s ease;
 }
 
@@ -93,20 +103,23 @@
   background: var(--color-red-bg);
 }
 
-/* Mobile (<768px): each item becomes a card with explicit 3-row placement:
-   merchant | 🔁, category | amount, date | delete. Explicit placement
-   tolerates the optional 🔁 (its cell is simply empty when absent). */
+/* Mobile (<768px): each item becomes a glass card with explicit 3-row
+   placement: merchant | 🔁, category | amount, date | delete. Explicit
+   placement tolerates the optional 🔁 (its cell is simply empty when absent). */
 @media (max-width: 767px) {
   .item {
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: center;
     gap: var(--space-2) var(--space-3);
-    padding: 14px;
+    padding: 14px 16px;
     background: var(--color-surface);
-    border-radius: var(--radius-md);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     box-shadow: var(--shadow-sm);
-    border-bottom: none;
+    border-bottom: 1px solid var(--glass-border);
   }
 
   .item:hover {
@@ -141,6 +154,7 @@
     grid-row: 3;
     grid-column: 1;
     justify-self: start;
+    text-align: left;
   }
 
   .delete {

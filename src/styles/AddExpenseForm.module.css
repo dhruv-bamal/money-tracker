@@ -5,7 +5,10 @@
   flex-direction: column;
   gap: var(--space-4);
   background: var(--color-surface);
-  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--shadow-sm);
   padding: var(--space-6);
 }
@@ -43,8 +46,8 @@
 
 .input:focus {
   outline: none;
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3px var(--color-accent-light);
 }
 
 .error {
@@ -55,6 +58,7 @@
   line-height: var(--leading-sm);
   color: var(--color-red);
   background: var(--color-red-bg);
+  border: 1px solid var(--color-red-bg);
   padding: 8px 12px;
   border-radius: var(--radius-md);
   margin-bottom: var(--space-3);
@@ -66,21 +70,25 @@
 
 .submit {
   width: 100%;
-  padding: 11px 16px;
-  background: var(--color-accent);
+  padding: 12px 16px;
+  background: var(--gradient-warm);
   color: #ffffff;
   border: none;
   border-radius: var(--radius-md);
   font-size: var(--text-sm);
   line-height: var(--leading-sm);
   font-weight: var(--font-semibold);
+  letter-spacing: 0.01em;
   cursor: pointer;
-  transition: background 0.15s ease, transform 0.1s ease;
+  box-shadow: var(--glow-accent);
+  transition: filter 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
   margin-top: var(--space-2);
 }
 
 .submit:hover {
-  background: var(--color-accent-hover);
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 28px rgba(255, 77, 109, 0.45);
 }
 
 .submit:active {
@@ -89,5 +97,5 @@
 
 .submit:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35);
+  box-shadow: 0 0 0 3px var(--color-accent-light), var(--glow-accent);
 }

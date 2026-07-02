@@ -1,11 +1,44 @@
 @import "../styles/global.css";
 
-/* Page is a single stacked column of sections */
+/* Page is a single stacked column of sections, each rising in on load */
 .app {
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
-  padding-top: var(--space-8);
+  padding-top: var(--space-4);
+}
+
+.app > * {
+  animation: rise 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.app > *:nth-child(2) {
+  animation-delay: 0.06s;
+}
+
+.app > *:nth-child(3) {
+  animation-delay: 0.12s;
+}
+
+.app > *:nth-child(4) {
+  animation-delay: 0.18s;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app > * {
+    animation: none;
+  }
 }
 
 /* Two-column grid: Summary (60) + RecurringSection (40) */
@@ -39,11 +72,11 @@
 }
 
 .filterButton {
-  padding: 6px 14px;
+  padding: 6px 15px;
   border-radius: var(--radius-full);
   font-size: var(--text-sm);
   border: 1px solid var(--color-border);
-  background: var(--color-surface);
+  background: transparent;
   color: var(--color-text-secondary);
   cursor: pointer;
   transition: all 0.15s ease;
@@ -51,26 +84,28 @@
 
 .filterButton:hover {
   border-color: var(--color-accent);
-  color: var(--color-accent);
+  color: var(--color-text-primary);
 }
 
 .filterButton:focus-visible {
   outline: none;
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  box-shadow: 0 0 0 3px var(--color-accent-light);
 }
 
 .filterButtonActive {
-  background: var(--color-accent);
+  background: var(--gradient-warm);
   color: #ffffff;
-  border-color: var(--color-accent);
-  font-weight: var(--font-medium);
+  border-color: transparent;
+  font-weight: var(--font-semibold);
+  box-shadow: var(--glow-accent);
 }
 
 .filterButtonActive:hover {
-  background: var(--color-accent-hover);
-  border-color: var(--color-accent-hover);
+  background: var(--gradient-warm);
+  border-color: transparent;
   color: #ffffff;
+  filter: brightness(1.08);
 }
 
 /* Tablet + mobile: collapse both two-column grids to a single column */

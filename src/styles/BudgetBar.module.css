@@ -1,25 +1,85 @@
 @import "../styles/global.css";
 
+/* Hero dashboard card: glass surface with a faint warm sheen in the corner. */
 .card {
-  background: var(--color-surface);
-  border-radius: var(--radius-lg);
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(480px 220px at 8% -20%, rgba(255, 122, 47, 0.12), transparent 65%),
+    var(--color-surface);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--shadow-md);
-  padding: var(--space-6);
+  padding: var(--space-8);
+}
+
+/* Big spend figure on the left, limit input on the right */
+.heroTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-8);
+  flex-wrap: wrap;
 }
 
 .title {
-  font-size: var(--text-lg);
-  line-height: var(--leading-lg);
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
   font-weight: var(--font-semibold);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.statsRow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+}
+
+.spent {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-display);
+  font-size: var(--text-hero);
+  line-height: var(--leading-hero);
+  font-weight: var(--font-bold);
+  letter-spacing: -0.03em;
   color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.spentLabel {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  font-weight: var(--font-medium);
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+}
+
+.remaining {
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-green);
+}
+
+.over {
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-red);
 }
 
 .limitRow {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--space-4);
-  margin-top: var(--space-4);
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
 }
 
 .limitLabel {
@@ -32,13 +92,15 @@
 }
 
 .limitInput {
-  width: 120px;
+  width: 130px;
   text-align: right;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  padding: 6px 12px;
+  padding: 8px 12px;
+  font-family: var(--font-display);
   font-size: var(--text-base);
   font-weight: var(--font-semibold);
+  font-variant-numeric: tabular-nums;
   color: var(--color-text-primary);
   background: var(--color-surface);
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
@@ -46,37 +108,8 @@
 
 .limitInput:focus {
   outline: none;
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.35);
-}
-
-.statsRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: var(--space-8);
-  margin: var(--space-4) 0;
-}
-
-.spent {
-  font-size: var(--text-3xl);
-  line-height: var(--leading-3xl);
-  font-weight: var(--font-bold);
-  color: var(--color-text-primary);
-}
-
-.remaining {
-  font-size: var(--text-xl);
-  line-height: var(--leading-xl);
-  font-weight: var(--font-semibold);
-  color: var(--color-green);
-}
-
-.over {
-  font-size: var(--text-xl);
-  line-height: var(--leading-xl);
-  font-weight: var(--font-semibold);
-  color: var(--color-red);
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3px var(--color-accent-light);
 }
 
 /* Progress track. The "% used" caption lives inside this element in the
@@ -85,15 +118,40 @@
 .barTrack {
   position: relative;
   height: 12px;
-  background: var(--color-border);
+  background: var(--color-surface-2);
   border-radius: var(--radius-full);
-  margin: var(--space-4) 0 var(--space-8);
+  margin: var(--space-6) 0 var(--space-8);
 }
 
+/* The inline style sets width + a solid state color (green/amber/red);
+   the gradient background-image paints over it. State-specific gradients
+   are keyed off the serialized inline color so the amber/red warnings
+   still take over as the budget fills up — without touching the JSX. */
 .barFill {
   height: 100%;
   border-radius: var(--radius-full);
+  background-image: var(--gradient-warm);
+  box-shadow: var(--glow-accent);
   transition: width 0.5s ease, background-color 0.4s ease;
+  animation: fillIn 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.barFill[style*="245, 158, 11"],
+.barFill[style*="#f59e0b"] {
+  background-image: var(--gradient-amber);
+  box-shadow: 0 4px 24px rgba(245, 158, 11, 0.35);
+}
+
+.barFill[style*="239, 68, 68"],
+.barFill[style*="#ef4444"] {
+  background-image: var(--gradient-red);
+  box-shadow: 0 4px 24px rgba(239, 68, 68, 0.4);
+}
+
+@keyframes fillIn {
+  from {
+    width: 0;
+  }
 }
 
 .barCaption {
@@ -103,4 +161,18 @@
   font-size: var(--text-sm);
   line-height: var(--leading-sm);
   color: var(--color-text-secondary);
+}
+
+@media (max-width: 767px) {
+  .card {
+    padding: var(--space-6) var(--space-5);
+  }
+
+  .heroTop {
+    flex-direction: column;
+  }
+
+  .limitRow {
+    align-items: flex-start;
+  }
 }
