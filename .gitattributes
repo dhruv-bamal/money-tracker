@@ -1,0 +1,2 @@
+# Exclude stylesheets from GitHub language stats so TypeScript shows as primary
+*.css linguist-detectable=false
