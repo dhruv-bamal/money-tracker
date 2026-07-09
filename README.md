@@ -79,3 +79,28 @@ a deliberate choice to separate logic from UI.
 
 _Follow along on
 [LinkedIn](https://linkedin.com/in/dhruv-bamal)._
+
+### POST /api/auth/signup
+
+Creates a new account. **Response 201:** `{ token, user: { id, email, created_at } }`.
+**Response 400:** missing fields or password under 8 characters.
+**Response 409:** email already registered.
+
+### POST /api/auth/login
+
+**Response 200:** `{ token, user: { id, email } }`.
+**Response 401:** invalid email or password (same message for both cases — prevents user enumeration).
+
+### Auth on protected routes
+
+`/api/transactions` and `/api/summary` now require `Authorization: Bearer <token>`.
+**Response 401:** missing or invalid token.
+Every query is scoped to the authenticated user — no cross-account data access.
+
+## Security note
+
+Auth tokens are stored in localStorage for simplicity. This is readable by
+any JS running on the page (XSS risk). A production app would use httpOnly
+cookies instead, which aren't accessible to JavaScript — but that requires
+backend cookie handling and CSRF protection. Documented tradeoff, not an
+oversight.

@@ -1,9 +1,14 @@
 import { useState } from "react";
-import type { Transaction } from "../types";
 import styles from "../styles/AddExpenseForm.module.css";
 
+interface NewExpense {
+  amount: number;
+  merchant: string;
+  date: string;
+}
+
 interface AddExpenseFormProps {
-  onAdd: (transaction: Transaction) => void;
+  onAdd: (transaction: NewExpense) => Promise<void>;
 }
 
 function AddExpenseForm({ onAdd }: AddExpenseFormProps) {
@@ -11,8 +16,11 @@ function AddExpenseForm({ onAdd }: AddExpenseFormProps) {
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
+  async function handleSubmit(
+    e: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> {
     e.preventDefault();
     setError(null);
 
@@ -31,17 +39,21 @@ function AddExpenseForm({ onAdd }: AddExpenseFormProps) {
       return;
     }
 
-    const newTransaction: Transaction = {
-      id: crypto.randomUUID(),
-      amount: Number(amount),
-      merchant: merchant.trim(),
-      date,
-    };
-
-    onAdd(newTransaction);
-    setMerchant("");
-    setAmount("");
-    setDate("");
+    setSubmitting(true);
+    try {
+      await onAdd({
+        amount: Number(amount),
+        merchant: merchant.trim(),
+        date,
+      });
+      setMerchant("");
+      setAmount("");
+      setDate("");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to add expense.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -58,6 +70,7 @@ function AddExpenseForm({ onAdd }: AddExpenseFormProps) {
           onChange={(e) => setMerchant(e.target.value)}
           placeholder="e.g. Swiggy, Netflix"
           className={styles.input}
+          disabled={submitting}
         />
       </div>
 
@@ -73,6 +86,7 @@ function AddExpenseForm({ onAdd }: AddExpenseFormProps) {
           placeholder="0"
           min="0"
           className={styles.input}
+          disabled={submitting}
         />
       </div>
 
@@ -86,11 +100,12 @@ function AddExpenseForm({ onAdd }: AddExpenseFormProps) {
           value={date}
           onChange={(e) => setDate(e.target.value)}
           className={styles.input}
+          disabled={submitting}
         />
       </div>
 
-      <button type="submit" className={styles.submit}>
-        Add Expense
+      <button type="submit" className={styles.submit} disabled={submitting}>
+        {submitting ? "Adding..." : "Add Expense"}
       </button>
     </form>
   );

@@ -8,9 +8,12 @@ export type Category =
 
 export interface Transaction {
   id: string;
+  user_id: string;
   amount: number;
   merchant: string;
   date: string;
+  created_at: string;
+  category: Category;
 }
 
 export type CategoryTotals = {
