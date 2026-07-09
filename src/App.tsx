@@ -54,7 +54,7 @@ function App() {
   }
 
   if (loading) {
-    return <p>Loading your transactions...</p>;
+    return <p className={styles.loading}>Loading your transactions...</p>;
   }
 
   async function addExpense(newTransaction: {
@@ -107,11 +107,13 @@ function App() {
   return (
     <div className={styles.app}>
       <Header />
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <p>Logged in as {user?.email}</p>
-        <button onClick={logout}>Log out</button>
+      <div className={styles.userBar}>
+        <p className={styles.userEmail}>Logged in as {user?.email}</p>
+        <button className={styles.logoutButton} onClick={logout}>
+          Log out
+        </button>
       </div>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p className={styles.error}>{error}</p>}
       <BudgetBar transactions={transactions} />
       <div className={styles.gridSummary}>
         <Summary transactions={transactions} />

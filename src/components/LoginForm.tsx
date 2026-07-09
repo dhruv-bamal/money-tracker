@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { apiFetch } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
+import styles from "../styles/AuthForm.module.css";
 
 export function LoginForm({
   onSwitchToSignup,
@@ -33,32 +34,58 @@ export function LoginForm({
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Log in</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <button type="submit" disabled={loading}>
-        {loading ? "Logging in..." : "Log in"}
-      </button>
-      <p>
-        No account?{" "}
-        <button type="button" onClick={onSwitchToSignup}>
-          Sign Up
+    <div className={styles.page}>
+      <div className={styles.brand}>
+        <span className={styles.logo} aria-hidden="true">
+          ₹
+        </span>
+        <span className={styles.title}>Money Tracker</span>
+      </div>
+      <form onSubmit={handleSubmit} className={styles.card}>
+        <h2 className={styles.heading}>Log in</h2>
+        {error && <p className={styles.error}>{error}</p>}
+        <div className={styles.field}>
+          <label htmlFor="login-email" className={styles.label}>
+            Email
+          </label>
+          <input
+            id="login-email"
+            className={styles.input}
+            type="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div className={styles.field}>
+          <label htmlFor="login-password" className={styles.label}>
+            Password
+          </label>
+          <input
+            id="login-password"
+            className={styles.input}
+            type="password"
+            placeholder="Your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit" className={styles.submit} disabled={loading}>
+          {loading ? "Logging in..." : "Log in"}
         </button>
-      </p>
-    </form>
+        <p className={styles.switchRow}>
+          No account?{" "}
+          <button
+            type="button"
+            className={styles.switchButton}
+            onClick={onSwitchToSignup}
+          >
+            Sign Up
+          </button>
+        </p>
+      </form>
+    </div>
   );
 }
