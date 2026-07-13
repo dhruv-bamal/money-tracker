@@ -16,7 +16,9 @@ function ExpenseList({
   if (transactions.length === 0) {
     return (
       <div className={styles.empty}>
-        <p className={styles.emptyText}>No expenses yet - add your first one.</p>
+        <p className={styles.emptyText}>
+          No expenses yet - add your first one.
+        </p>
       </div>
     );
   }
@@ -28,7 +30,7 @@ function ExpenseList({
           key={tx.id}
           transaction={tx}
           onDelete={onDelete}
-          isRecurring={recurringMerchants.has(tx.merchant)}
+          isRecurring={recurringMerchants.has(tx.merchant.toLowerCase())}
         />
       ))}
     </div>
