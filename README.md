@@ -1,47 +1,58 @@
-# Money Tracker
+# Money Tracker (Frontend-Only Version)
 
-A spending & subscription tracker for Indian students and freelancers.
+> This repo is no longer under active development. For the current,
+> deployed full-stack version — with a real backend, authentication, and
+> multi-user support — see:
+>
+> - **Live app:** https://money-tracker-next-mu.vercel.app/login
+> - **Frontend:** [`money-tracker-next`](https://github.com/dhruv-bamal/money-tracker-next)
+> - **API:** [`money-tracker-api`](https://github.com/dhruv-bamal/money-tracker-api)
 
-**[Live Demo](https://money-tracker-drab-tau.vercel.app/)** · **[GitHub](https://github.com/dhruv-bamal/money-tracker)**
+A frontend-only spending & subscription tracker for Indian students and
+freelancers. All data lives in the browser's `localStorage` — no backend,
+no accounts.
 
-# Budget Bar
+**Static demo:** https://money-tracker-drab-tau.vercel.app/
 
-![App screenshot](public/appScreenshot01.png)
+---
 
-# Category Division, Recurring Section
+## Features
 
-![App screenshot](public/appScreenshot02.png)
+- Add expenses, auto-categorized by merchant name
+- Recurring-subscription detection — flags repeated similar-amount charges
+- Budget progress bar
+- Data persisted via `localStorage` (single browser/device only)
 
-# Expense List
+---
 
-![App screenshot](public/appScreenshot03.png)
+## Tech stack
 
-## What it does
+| Layer | Technology |
+|---|---|
+| Framework | React 18 |
+| Language | TypeScript (strict) |
+| Build tool | Vite |
+| Styling | CSS Modules |
+| Persistence | `localStorage` |
+| Deployment | Vercel (static) |
 
-- **Auto-categorizes expenses** by merchant name — type "Swiggy" and it
-  automatically tags it as Food, no manual selection needed.
-- **Detects recurring subscriptions** — add Netflix twice at the same
-  amount and it flags the pattern with a 🔁 badge.
-- **Budget tracking** — set a monthly limit, watch a progress bar fill
-  green → amber → red as you spend.
-- **Persists across sessions** — data survives page refreshes via
-  localStorage (real database coming in Phase 2).
-- **Category filtering** — filter expenses by Food, Transport,
-  Subscriptions, or see all at once.
+---
 
-## Tech
+## Why it was superseded
 
-| Layer       | Choice       | Why                       |
-| ----------- | ------------ | ------------------------- |
-| Framework   | React 18     | Component model, hooks    |
-| Language    | TypeScript   | Catch bugs before runtime |
-| Build tool  | Vite         | Instant HMR, fast builds  |
-| Styling     | CSS Modules  | Scoped, no runtime cost   |
-| Persistence | localStorage | No backend yet            |
+The current version replaces `localStorage` with a PostgreSQL database
+behind a Node/Express API, adds bcrypt + JWT authentication with per-user
+data isolation, and runs on Next.js instead of Vite.
 
-**No UI library.** Every component is hand-built
+The pure business-logic functions written here — `categorize()`,
+`totalByCategory()`, `detectRecurring()` — carried over **unchanged** into
+both later versions. They were written with zero dependency on React or
+any framework specifically so they could move server-side and into
+Next.js without modification.
 
-## Run locally
+---
+
+## Running locally
 
 ```bash
 git clone https://github.com/dhruv-bamal/money-tracker.git
@@ -50,57 +61,16 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173`.
+No environment variables or backend required — fully self-contained,
+runs entirely client-side.
 
-## Project structure
+---
 
-```text
-src/
-├── App.tsx              # Orchestrator — state, handlers, layout
-├── types.ts             # Shared TypeScript interfaces
-├── components/          # React UI components
-│   ├── Header.tsx
-│   ├── BudgetBar.tsx    # Budget state + progress bar + Budget class
-│   ├── Summary.tsx      # Category totals
-│   ├── RecurringSection.tsx
-│   ├── AddExpenseForm.tsx
-│   ├── ExpenseList.tsx
-│   └── ExpenseItem.tsx
-├── lib/                 # Business logic — no React dependency
-│   ├── logic.ts         # categorize(), totalByCategory(), detectRecurring()
-│   ├── Budget.ts        # Budget class — OOP encapsulation
-│   └── data.ts          # Seed data
-└── styles/              # CSS modules
-```
+## What I learned
 
-The `lib/` functions are framework-independent — they run identically
-in Node, in a serverless function, or in a React component. This was
-a deliberate choice to separate logic from UI.
-
-_Follow along on
-[LinkedIn](https://linkedin.com/in/dhruv-bamal)._
-
-### POST /api/auth/signup
-
-Creates a new account. **Response 201:** `{ token, user: { id, email, created_at } }`.
-**Response 400:** missing fields or password under 8 characters.
-**Response 409:** email already registered.
-
-### POST /api/auth/login
-
-**Response 200:** `{ token, user: { id, email } }`.
-**Response 401:** invalid email or password (same message for both cases — prevents user enumeration).
-
-### Auth on protected routes
-
-`/api/transactions` and `/api/summary` now require `Authorization: Bearer <token>`.
-**Response 401:** missing or invalid token.
-Every query is scoped to the authenticated user — no cross-account data access.
-
-## Security note
-
-Auth tokens are stored in localStorage for simplicity. This is readable by
-any JS running on the page (XSS risk). A production app would use httpOnly
-cookies instead, which aren't accessible to JavaScript — but that requires
-backend cookie handling and CSRF protection. Documented tradeoff, not an
-oversight.
+Building this taught me how JavaScript actually executes (closures,
+hoisting, the event loop), how to structure a real interactive React app
+with typed props and controlled forms, and — the decision that mattered
+most in hindsight — to keep business logic in plain, framework-free
+functions rather than tangling it into components. That single habit is
+why none of this logic had to be rewritten later.
